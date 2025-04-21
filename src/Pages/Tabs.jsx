@@ -77,7 +77,6 @@ export default function FullWidthTabs() {
 						}}
 						className="font-medium text-white text-2xl text-center mt-16"
 						id="Glow">
-						<Tab label="Structure" {...a11yProps(0)} sx={tabStyles} />
 						<Tab label="Schedule" {...a11yProps(1)} sx={tabStyles} />
 					</Tabs>
 				</AppBar>
