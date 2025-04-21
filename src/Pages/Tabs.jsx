@@ -55,7 +55,7 @@ export default function FullWidthTabs() {
 	return (
 		<div className="md:px-[10%] md:mt-5 mt-8" id="Tabs" data-aos="fade-up" data-aos-duration="800">
 			<div className="font-medium text-[1.6rem] md:text-[1.8rem] relative md:top-[2.8rem] top-[2.7rem] text-center text-white" id="Glow">
-				&
+				
 			</div>
 			<Box sx={{ width: "100%" }}>
 				<AppBar position="static" sx={{ bgcolor: "transparent", boxShadow: "none" }} className="px-[10%]">
