@@ -2,15 +2,16 @@ import React, { useEffect } from "react"
 import AOS from "aos"
 import "aos/dist/aos.css"
 
-const Senin = React.lazy(() => import("../components/Mapel/Senin"))
-const Selasa = React.lazy(() => import("../components/Mapel/Selasa"))
-const Rabu = React.lazy(() => import("../components/Mapel/Rabu"))
-const Kamis = React.lazy(() => import("../components/Mapel/Kamis"))
-const Jumat = React.lazy(() => import("../components/Mapel/Jumat"))
+import Senin from "../components/Mapel/Senin"
+import Selasa from "../components/Mapel/Selasa"
+import Rabu from "../components/Mapel/Rabu"
+import Kamis from "../components/Mapel/Kamis"
+import Jumat from "../components/Mapel/Jumat"
 
 const Schedule = () => {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    const currentDay = daysOfWeek[new Date().getDay()]
+    const currentDayIndex = new Date().getDay()
+    const currentDay = daysOfWeek[currentDayIndex]
 
     useEffect(() => {
         AOS.init()
@@ -26,21 +27,20 @@ const Schedule = () => {
     ]
 
     const dayComponents = [null, Senin, Selasa, Rabu, Kamis, Jumat]
-    const TodayComponent = dayComponents[new Date().getDay()]
-    const currentPiketNames = piketGroup[new Date().getDay() - 1]
+    const TodayComponent = dayComponents[currentDayIndex]
+    const currentPiketNames = piketGroup[currentDayIndex - 1]
 
     return (
         <>
             <div className="lg:flex lg:justify-center lg:gap-32 lg:mb-10 lg:mt-16 ">
                 <div className="text-white flex flex-col justify-center items-center mt-8 md:mt-3 overflow-y-hidden">
-                    <div className="text-2xl font-medium mb-5" data-aos="fade-up" data-aos-duration="500">
+                    <div className="text-2xl font-medium mb-2" data-aos="fade-up" data-aos-duration="500">
                         {currentDay}
                     </div>
+                    <div className="text-sm text-white opacity-50 mb-4">Hari ke-{currentDayIndex}</div>
                     <div data-aos="fade-up" data-aos-duration="400">
                         {TodayComponent ? (
-                            <React.Suspense fallback={<p>Loading...</p>}>
-                                <TodayComponent />
-                            </React.Suspense>
+                            <TodayComponent />
                         ) : (
                             <p className="opacity-50">Prei Bolo Sekolahe</p>
                         )}
