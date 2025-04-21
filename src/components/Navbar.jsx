@@ -47,7 +47,7 @@ const Navbar = () => {
 						</li>
 						<li>
 							<a href="#Tabs" className="text-white opacity-80 text-lg font-bold">
-								Structure & Schedule
+								Structure
 							</a>
 						</li>
 					</ul>
