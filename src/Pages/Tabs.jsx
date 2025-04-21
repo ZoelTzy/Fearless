@@ -10,12 +10,9 @@ import StrukturKelas from "./StrukturKelas"
 import Schedule from "./Schedule"
 import AOS from "aos"
 import "aos/dist/aos.css"
-
-// Swiper
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 
-// Tab Panel component
 function TabPanel(props) {
 	useEffect(() => {
 		AOS.init()
@@ -25,12 +22,7 @@ function TabPanel(props) {
 	const { children, value, index, ...other } = props
 
 	return (
-		<div
-			role="tabpanel"
-			hidden={value !== index}
-			id={`full-width-tabpanel-${index}`}
-			aria-labelledby={`full-width-tab-${index}`}
-			{...other}>
+		<div role="tabpanel" hidden={value !== index} id={`full-width-tabpanel-${index}`} aria-labelledby={`full-width-tab-${index}`} {...other}>
 			{value === index && (
 				<Box sx={{ p: 0 }}>
 					<Typography>{children}</Typography>
@@ -62,16 +54,11 @@ export default function FullWidthTabs() {
 
 	return (
 		<div className="md:px-[10%] md:mt-5 mt-8" id="Tabs" data-aos="fade-up" data-aos-duration="800">
-			<div
-				className="font-medium text-[1.6rem] md:text-[1.8rem] relative md:top-[2.8rem] top-[2.7rem] text-center text-white"
-				id="Glow">
+			<div className="font-medium text-[1.6rem] md:text-[1.8rem] relative md:top-[2.8rem] top-[2.7rem] text-center text-white" id="Glow">
 				&
 			</div>
 			<Box sx={{ width: "100%" }}>
-				<AppBar
-					position="static"
-					sx={{ bgcolor: "transparent", boxShadow: "none" }}
-					className="px-[10%]">
+				<AppBar position="static" sx={{ bgcolor: "transparent", boxShadow: "none" }} className="px-[10%]">
 					<Tabs
 						value={value}
 						onChange={handleChange}
