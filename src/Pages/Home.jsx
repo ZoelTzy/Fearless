@@ -1,5 +1,6 @@
 import BoxClassIg from "../components/BoxClassIg"
 import BoxOldWeb from "../components/BoxOldWeb"
+import BoxSpotify from "../components/BoxSpotify"
 import BoxTextAnonim from "../components/BoxTextAnonim"
 import Navbar from "../components/Navbar"
 
@@ -34,7 +35,7 @@ const Home = () => {
 					</div>
 					<div className="grid gap-2 md:gap-0 md:grid-cols-1">
 						<BoxOldWeb />
-						<BoxTextAnonim />
+						<BoxSpotify />
 					</div>
 				</div>
 			</div>
