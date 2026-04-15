@@ -1,81 +1,37 @@
-import React, { useEffect, useState } from "react"
-import Slider from "react-slick"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
+import React, { useState } from "react"
+// Import komponen dan modul Swiper React
+import { Swiper, SwiperSlide } from "swiper/react"
+import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules"
+
+// Import CSS bawaan Swiper
+import "swiper/css"
+import "swiper/css/effect-coverflow"
+import "swiper/css/pagination"
+
 import ButtonSend from "../components/ButtonSend"
 import ButtonRequest from "../components/ButtonRequest"
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage"
 import Modal from "@mui/material/Modal"
 import { Box, IconButton } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
-import { useSpring, animated } from "@react-spring/web" // Import the necessary components
+import { useSpring, animated } from "@react-spring/web"
+
+// DAFTAR FOTO: Masukkan nama file foto yang sudah kamu simpan di folder public/gallery/
+const DAFTAR_FOTO = [
+	"/gallery/foto1.jpg",
+	"/gallery/foto2.jpg",
+	"/gallery/foto3.jpg",
+	"/gallery/foto4.jpg",
+	"/gallery/foto5.jpg"
+]
 
 const Carousel = () => {
-	const [images, setImages] = useState([])
 	const [open, setOpen] = useState(false)
 	const [selectedImage, setSelectedImage] = useState(null)
 
 	const modalFade = useSpring({
 		opacity: open ? 1 : 0,
-		config: { duration: 300 }, // Adjust the duration as needed
+		config: { duration: 300 }, 
 	})
-
-	// Fungsi untuk mengambil daftar gambar dari Firebase Storage
-	const fetchImagesFromFirebase = async () => {
-		try {
-			const storage = getStorage() // Mendapatkan referensi Firebase Storage
-			const storageRef = ref(storage, "GambarAman/") // Menggunakan ref dengan storage
-
-			const imagesList = await listAll(storageRef) // Menggunakan listAll untuk mendapatkan daftar gambar
-
-			const imageURLs = await Promise.all(
-				imagesList.items.map(async (item) => {
-					const url = await getDownloadURL(item) // Menggunakan getDownloadURL untuk mendapatkan URL gambar
-					return url
-				}),
-			)
-
-			setImages(imageURLs)
-		} catch (error) {
-			console.error("Error fetching images from Firebase Storage:", error)
-		}
-	}
-
-	useEffect(() => {
-		fetchImagesFromFirebase()
-	}, [])
-
-	const settings = {
-		centerMode: true,
-		centerPadding: "30px",
-		slidesToShow: 3,
-		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 2000,
-		dots: true,
-		responsive: [
-			{
-				breakpoint: 768,
-				settings: {
-					arrows: false,
-					centerMode: true,
-					centerPadding: "50px",
-					slidesToShow: 1,
-					dots: false,
-				},
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					arrows: false,
-					centerMode: true,
-					centerPadding: "70px",
-					slidesToShow: 1,
-					dots: false,
-				},
-			},
-		],
-	}
 
 	const handleImageClick = (imageUrl) => {
 		setSelectedImage(imageUrl)
@@ -92,18 +48,52 @@ const Carousel = () => {
 			<div className="text-white opacity-60 text-base font-semibold mb-4 mx-[10%] mt-10 lg:text-center lg:text-3xl lg:mb-8" id="Gallery">
 				Class Gallery
 			</div>
-			<div id="Carousel">
-				<Slider {...settings}>
-					{images.map((imageUrl, index) => (
-						<img
-							key={index}
-							src={imageUrl}
-							alt={`Image ${index}`}
-							onClick={() => handleImageClick(imageUrl)}
-							style={{ cursor: "pointer" }}
-						/>
-					))}
-				</Slider>
+            
+			<div id="Carousel" className="w-full max-w-5xl mx-auto pb-10">
+                {DAFTAR_FOTO.length > 0 ? (
+                    <Swiper
+                        effect={"coverflow"}
+                        grabCursor={true}
+                        centeredSlides={true}
+                        slidesPerView={"auto"}
+                        loop={true}
+                        // Jika gambar kurang dari 5, batasi loopnya agar tidak error
+                        loopAdditionalSlides={DAFTAR_FOTO.length >= 5 ? 5 : DAFTAR_FOTO.length} 
+                        coverflowEffect={{
+                            rotate: 0,
+                            stretch: -50, // Menarik slide ke belakang
+                            depth: 150,   // Kedalaman 3D
+                            modifier: 1,
+                            slideShadows: true, // Bayangan gelap di slide belakang
+                        }}
+                        pagination={{ 
+                            clickable: true,
+                        }}
+                        autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        }}
+                        modules={[EffectCoverflow, Pagination, Autoplay]}
+                        className="w-full"
+                    >
+                        {DAFTAR_FOTO.map((imageUrl, index) => (
+                            <SwiperSlide
+                                key={index}
+                                // Mengatur ukuran kartu dan mempercantik dengan Tailwind
+                                className="w-[280px] md:w-[350px] relative rounded-xl overflow-hidden shadow-2xl"
+                            >
+                                <img
+                                    src={imageUrl}
+                                    alt={`Image ${index}`}
+                                    onClick={() => handleImageClick(imageUrl)}
+                                    className="w-full h-[350px] md:h-[450px] object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                ) : (
+                    <div className="text-white text-center opacity-50">Belum ada foto di gallery...</div>
+                )}
 			</div>
 
 			<div className="flex justify-center items-center gap-6 text-base mt-5 lg:mt-8">
